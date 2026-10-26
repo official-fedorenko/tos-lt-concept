@@ -717,12 +717,11 @@ function render(lang){
 
 /* ---------- language ---------- */
 function pick(){
-  var q=(location.search.match(/[?&]lang=(lt|en|ru)/)||[])[1]; if(q) return q;
-  var s=store('tos_lang'); if(s&&T[s]) return s;
-  var n=(navigator.language||'lt').slice(0,2).toLowerCase(); return T[n]?n:'lt';
+  // always open in Lithuanian; only an explicit ?lang= link overrides it
+  return (location.search.match(/[?&]lang=(lt|en|ru)/)||[])[1]||'lt';
 }
 function setLang(l){
-  render(l); store('tos_lang',l);
+  render(l);
   try{var u=new URL(location.href); u.searchParams.set('lang',l); history.replaceState(null,'',u);}catch(e){}
 }
 $$('.lang button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang);});});
